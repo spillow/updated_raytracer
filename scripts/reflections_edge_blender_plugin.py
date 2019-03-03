@@ -14,7 +14,7 @@ class Material:
              "refract(%f),blur(%f)\n")
         (R,G,B) = self.color[:3]
         # TODO: fill in the missing inputs!
-        out = s % (0,0,0,R,G,B,0,0)
+        out = s % (0,1,0,R,G,B,0,0)
         f.write(out)
 
 class Face:
@@ -32,10 +32,29 @@ class Mesh:
     def addFace(self, face):
         self.faces.append(face)
     def emit(self, f):
-        f.write('file %s\n' % (self.name))
+        f.write('file %s.txt\n' % (os.path.join(os.getcwd(), self.name)))
         with open(self.name+'.txt', 'w') as meshFile:
             for face in self.faces:
                 face.emit(meshFile)
+
+class Camera:
+    def __init__(self, position, rotation):
+        self.position = position
+        self.rotation = rotation
+    def emit(self, f):
+        (pX, pY, pZ) = self.position
+        (rX, rY, rZ) = self.rotation
+        f.write("camera location(%f,%f,%f),rotation(%f,%f,%f)\n" %
+            (pX, pY, pZ, rX, rY, rZ))
+
+class Light:
+    def __init__(self, position):
+        self.position  = position
+        self.color     = [1,1,1]
+        self.intensity = 1
+    def emit(self, f):
+        f.write("light location(%f,%f,%f),color(%f,%f,%f),intensity(%f)\n" %
+            tuple(self.position + self.color + [self.intensity]))
 
 def getMesh(obj):
     faces = obj.data.polygons
@@ -52,6 +71,10 @@ def getMesh(obj):
 
     return mesh
 
+def getLight(light):
+    assert light.type == 'LIGHT'
+    return Light(position=list(light.location))
+
 def getMaterialProperties(obj):
     # TODO: for when we support more materials!
     #for face in obj.polygons:
@@ -66,6 +89,12 @@ def getMaterialProperties(obj):
     color = tuple(inputs['Base Color'].default_value)
     return Material(color=color)
 
+def getCamera(camera):
+    assert camera.type == 'CAMERA'
+    assert camera.rotation_mode == 'XYZ'
+    return Camera(position=list(camera.location),
+                  rotation=list(camera.rotation_euler))
+
 def emitObject(f, obj):
     if obj.type == 'MESH':
         assert len(obj.material_slots) == 1, "Only 1 material slot for now!"
@@ -74,9 +103,11 @@ def emitObject(f, obj):
         mesh.emit(f)
         mat.emit(f)
     elif obj.type == 'LIGHT':
-        pass
+        light = getLight(obj)
+        light.emit(f)
     elif obj.type == 'CAMERA':
-        pass
+        camera = getCamera(obj)
+        camera.emit(f)
     else:
         assert False, "unhandled type!"
 
