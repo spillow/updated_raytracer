@@ -1,0 +1,6 @@
+[submodule "libs/FreeGLUT"]
+	path = libs/FreeGLUT
+	url = https://github.com/spillow/FreeGLUT
+[submodule "libs/glui"]
+	path = libs/glui
+	url = https://github.com/spillow/glui
