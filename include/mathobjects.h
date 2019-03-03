@@ -320,8 +320,8 @@ public:
 	void recursiveTrace(Ray** ray, int recursionDepth);
 	void traverseRayTree(Ray** node);
 	int pNumLights;
-	bool loadScene(char* filename);
-	bool loadAnimation(char* filename);
+	bool loadScene(const char* filename);
+	bool loadAnimation(const char* filename);
 	point cameraPosition;
 	int traceDepth;
 	matrix rotationMatrix;

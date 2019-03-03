@@ -971,7 +971,7 @@ Triangle* RayTracer::getMesh(char* filename, int* num_triangles)
 	return Triangles_Out;
 }
 
-bool RayTracer::loadScene(char* filename)
+bool RayTracer::loadScene(const char* filename)
 {
 	FILE* file_ptr = fopen(filename, "r");
 
@@ -1168,7 +1168,7 @@ bool RayTracer::loadScene(char* filename)
 	return true;
 }
 
-bool RayTracer::loadAnimation(char* filename)
+bool RayTracer::loadAnimation(const char* filename)
 {
 	//we'll be doing 25 frames/second
 

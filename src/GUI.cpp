@@ -66,12 +66,12 @@ void callback_func(int caller)
 				}*/
 
 			  //if ( tracer.loadScene("C:\\Documents and Settings\\spillow\\Desktop\\scene6.txt") ) {
-				if ( tracer.loadScene(File_Textbox->get_text()) ) {
+				if ( tracer.loadScene(File_Textbox->get_text().c_str()) ) {
 					//printf("%s\n", File_Textbox->get_text());
 	        
 					//load the animation
 					//animLoaded = tracer.loadAnimation("C:\\Documents and Settings\\spillow\\Desktop\\scene.anim");
-					tracer.loadAnimation(Anim_Textbox->get_text());
+					tracer.loadAnimation(Anim_Textbox->get_text().c_str());
           //animLoaded = tracer.loadAnimation("asd;flkjl;kj");
 	
 					//time how long it takes
