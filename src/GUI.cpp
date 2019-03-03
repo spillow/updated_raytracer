@@ -48,38 +48,10 @@ void callback_func(int caller)
         tracer.blurrySamples = blurry_spinner->get_int_val();
         tracer.blurDepth     = blurdepth_spinner->get_int_val();
 
-        // resize the output window
-        // glutReshapeWindow(X_Resolution->get_int_val(),
-        // Y_Resolution->get_int_val());
-
-        /*if ( mybuffer != NULL )
-            free(mybuffer);
-
-        mybuffer =
-        (GLubyte*)malloc(X_Resolution->get_int_val()*Y_Resolution->get_int_val()*3*sizeof(GLubyte));
-
-        if ( mybuffer == NULL )
-            return;
-
-        for (int i=0; i <
-        X_Resolution->get_int_val()*Y_Resolution->get_int_val()*3; i++)
-        {
-            mybuffer[i] = 0;
-            mybuffer[i+1] = 0;
-            mybuffer[i+2] = 0;
-        }*/
-
-        // if ( tracer.loadScene("C:\\Documents and
-        // Settings\\spillow\\Desktop\\scene6.txt") ) {
         if (tracer.loadScene(File_Textbox->get_text().c_str()))
         {
-            // printf("%s\n", File_Textbox->get_text());
-
             // load the animation
-            // animLoaded = tracer.loadAnimation("C:\\Documents and
-            // Settings\\spillow\\Desktop\\scene.anim");
             tracer.loadAnimation(Anim_Textbox->get_text().c_str());
-            // animLoaded = tracer.loadAnimation("asd;flkjl;kj");
 
             // time how long it takes
             start = clock();
@@ -127,11 +99,6 @@ void MakeGUI()
                                                callback_func);
     File_Textbox->set_alignment(GLUI_ALIGN_LEFT);
     File_Textbox->set_w(400);
-    /*glui->add_column_to_panel(File_Panel, false);
-    glui->add_column_to_panel(File_Panel, false);
-    glui->add_column_to_panel(File_Panel, false);
-    glui->add_column_to_panel(File_Panel, false);
-    glui->add_column_to_panel(File_Panel, false);*/
     Render->set_alignment(GLUI_ALIGN_RIGHT);
     Anim_Textbox = glui->add_edittext_to_panel(Text_Panel, "ANIM:", 1, 0, 4,
                                                callback_func);
@@ -163,10 +130,6 @@ void MakeGUI()
 
     Options_Panel =
         glui->add_panel_to_panel(Res_Options_Panel, "Options", true);
-    // check_box_transparency =
-    // glui->add_checkbox_to_panel(Options_Panel,"Transparency",0,4,callback_func);
-    // check_box_refraction =
-    // glui->add_checkbox_to_panel(Options_Panel,"Refraction",0,5,callback_func);
     check_box_shadows = glui->add_checkbox_to_panel(Options_Panel, "Shadows", 0,
                                                     6, callback_func);
     reflections_spinner = glui->add_spinner_to_panel(
@@ -176,8 +139,6 @@ void MakeGUI()
                                    GLUI_SPINNER_INT, 0, 26, callback_func);
     blurdepth_spinner = glui->add_spinner_to_panel(
         Options_Panel, "Blur Depth", GLUI_SPINNER_INT, 0, 27, callback_func);
-    // check_box_transparency->set_int_val(1);
-    // check_box_refraction->set_int_val(1);
     check_box_shadows->set_int_val(1);
     reflections_spinner->set_int_val(3);
     reflections_spinner->set_int_limits(1, 10);
@@ -188,26 +149,6 @@ void MakeGUI()
     blurry_spinner->set_int_limits(1, 128);
     blurdepth_spinner->set_int_val(0);
     blurdepth_spinner->set_int_limits(0, 5);
-
-    // holds the camera translation and rotation spinners
-    /*Camera_Panel = glui->add_panel("camerapanel", false);
-    Camera_Translation_Panel = glui->add_panel_to_panel(Camera_Panel,"Camera
-    Translation"); Camera_Translation_X =
-    glui->add_spinner_to_panel(Camera_Translation_Panel,"X:",GLUI_SPINNER_FLOAT,0,8,callback_func);
-      Camera_Translation_Y =
-    glui->add_spinner_to_panel(Camera_Translation_Panel,"Y:",GLUI_SPINNER_FLOAT,0,9,callback_func);
-      Camera_Translation_Z =
-    glui->add_spinner_to_panel(Camera_Translation_Panel,"Z:",GLUI_SPINNER_FLOAT,0,10,callback_func);
-
-      glui->add_column_to_panel(Camera_Panel, false);
-
-    Camera_Rotation_Panel = glui->add_panel_to_panel(Camera_Panel,"Camera
-    Rotation"); Camera_Rotation_X =
-    glui->add_spinner_to_panel(Camera_Rotation_Panel,"X:",GLUI_SPINNER_FLOAT,0,11,callback_func);
-      Camera_Rotation_Y =
-    glui->add_spinner_to_panel(Camera_Rotation_Panel,"Y:",GLUI_SPINNER_FLOAT,0,12,callback_func);
-      Camera_Rotation_Z =
-    glui->add_spinner_to_panel(Camera_Rotation_Panel,"Z:",GLUI_SPINNER_FLOAT,0,13,callback_func);*/
 
     Alias_Panel = glui->add_panel("Anti-Aliasing");
     Alias_Panel->set_alignment(GLUI_ALIGN_LEFT);

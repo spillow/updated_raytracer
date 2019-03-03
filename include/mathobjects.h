@@ -120,7 +120,6 @@ public:
         pColor        = color;
         pRefractivity = refractivity;
         pNumTriangles = numTriangles;
-        // Triangle_Array = new Triangle[numTriangles];
         Triangle_Array = objectTriangles;
         pRadius        = radius;
         pCenter        = center;
@@ -173,7 +172,6 @@ public:
         float transZ, float rotX, float rotY, float rotZ);
     void translate(float x, float y, float z);
     void rotateobj(float x, float y, float z);
-    // Triangle pTriangles[12];
     Triangle *pTriangles;
 
 private:
@@ -317,10 +315,8 @@ private:
     bool boxSphereIntersection(BoundingBox Box, Object sphere);
     bool boxTriangleIntersection(BoundingBox Box, Triangle triangle);
     bool planeBoxOverlap(Vector normal, float d, Vector maxbox);
-    // BoundingBox Box;
     int              maxObjectsPerBox;
     vector<Object *> objectsToSendBack;
-    // int numObjectsToSendBack;
 };
 
 class keyFrame
@@ -366,8 +362,6 @@ public:
         delete Light_Array;
     }
     void rayTrace();
-    // void setNumTriangles(int numTriangles) { pNumTriangles = numTriangles;
-    // Triangle_Array = new Triangle[pNumTriangles]; }
     void setNumObjects(int numObjects)
     {
         pNumObjects  = numObjects;
@@ -415,9 +409,7 @@ private:
     int              pResolutionX;
     int              pResolutionY;
     int              pSampling;
-    // int pNumTriangles;
     int pNumObjects;
-    // Triangle* Triangle_Array;
     Object *Object_Array;
     Light * Light_Array;
     bool    intersectsTriangle(point vertex, Triangle tri, Vector dir, float *t,

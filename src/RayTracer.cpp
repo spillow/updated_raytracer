@@ -25,95 +25,12 @@ point screenPoint(point bottomLeftCorner, point topRightCorner, int xPixel,
 void RayTracer::rayTrace()
 {
     /* Basic Algorithm:
-  For each pixel
-    Construct ray from camera through pixel
-    Find first primitive hit by ray
-    Determine color at intersection point
-    Draw color
-    */
-
-    // initialize scene with just box for now
-    /*Box tempBox(2.0,2.0,2.0,
-      -2.0,0.0,-4.0,
-          3.14159/4.0,3.14159/4.0,3.14159/4.0);
-
-    Box tempBox1(2.0,2.0,2.0,
-      2.0,1.0,-6.0,
-          3.14159/4.0,3.14159/4.0,3.14159/4.0);
-
-    Box tempBox2(20.0,0.1,20.0,
-      0.0,-2.0,-6.0,
-          3.14159/8.0,0,0);*/
-
-    /*Box tempBox(2.0,2.0,2.0,
-      -2.0,0.0,-10.0,
-          0,-3.14159/8.0,0);
-
-    Box tempBox1(2.0,2.0,2.0,
-      2.0,0.0,-10.0,
-          0,3.14159/4.0,0);
-
-    Box tempBox2(20.0,0.1,30.0,
-      0.0,-1.0,-0.0,
-          0,0,0);
-
-    Box tempBox3(20.0,20.0,0.1,
-        0.0,0.0,-13.0,0,0,0);
-
-    Box tempBox4(2.0,2.0,2.0,
-        -3.0,0.0,-5.0,0,0,0);*/
-
-    // pNumObjects = 3;
-    // pNumLights = 3;
-
-    // Light light1(point(-5.0,0.0,-9.0),Color(1,1,1), 1.0);
-    // Light light2(point(0.0,1.0,-7.0),Color(1,1,1), 7.0);
-    // Light light3(point(5.0,0.0,-9.0),Color(1,1,1), 1.0);
-
-    // Light light1(point(-5.0,0.0,-9.0),Color(1,1,1), 1.0);
-    // Light light2(point(0.0,1.0,-7.0),Color(1,1,1), 7.0);
-    // Light light3(point(5.0,0.0,-9.0),Color(1,1,1), 1.0);
-
-    // AreaLight bigLight(point(0,100.0,-5.6),4.0,4,0.01);
-    // Light light2(point(-2.0,2.0,-2.5),Color(1,1,1), 3.0);
-    // Light light3(point(1.0,0.5,-2.0),Color(1,1,1), 5.0,true,
-    // Vector(1,-1,-1)); Light light3(point(0.0,1.0,-1.0),Color(1,1,1), 4.0);
-    // Light light4(point(0.0,2.0,-5.0),Color(1,1,1), 10.0);
-
-    // Object_Array[0].Triangle_Array = tempBox.pTriangles;
-    // even if object is sphere, just generate triangles
-
-    /*Object_Array[0].setProperties(0.0,1.0,0.0,Color(.8,.1,0),0.0,12,tempBox.pTriangles);
-    Object_Array[1].setProperties(0.0,1.0,0.0,Color(0,.8,.1),0.0,12,tempBox1.pTriangles);
-    Object_Array[2].setProperties(0.0,1.0,0.0,Color(0,0,1),0.0,12,tempBox2.pTriangles);
-    Object_Array[3].setProperties(1.0,1.0,2.0,Color(1,1,0),0.0,1,new
-  Triangle(),1.0,point(1.0,0.0,-7.5));
-    Object_Array[4].setProperties(0.0,1.0,0.0,Color(0,1,1),0.0,12,tempBox3.pTriangles);
-    Object_Array[5].setProperties(1.0,1.0,3.0,Color(1,1,0),0.0,1,new
-  Triangle(),1.0,point(2.0,0.0,-4.5));
-    //Object_Array[6].setProperties(0.0,1.0,0.0,Color(1,1,0),1.0,1,new
-  Triangle(),1.0,point(1.3,0.0,-3.0));
-    Object_Array[6].setProperties(0.0,1.0,0.0,Color(.6,.2,.4),0.0,1,new
-  Triangle(),1.0,point(0.0,0.0,-4.0));
-  Object_Array[7].setProperties(0.0,1.0,0.0,Color(.5,.5,.5),0.0,12,tempBox4.pTriangles);
-    Light_Array[0] = light1;
-  Light_Array[1] = light2;
-    Light_Array[2] = light3;*/
-
-    /*for (int i=3; i < 19; i++)
-    {
-        Light_Array[i] = bigLight.Light_Array[i-3];
-    }*/
-    // Light_Array[3] = light4;
-
-    // the viewing plane will arbitrarily be set to [(-10 10), (10 -10)]
-
-    // point cameraPosition(3.0,0.0,5.0);
-    // matrix rotMatrix(matrix::ROTATE,-3.14159/32.0,0.0,0.0);
-
-    // specifies bottom left corner of viewing plane in world coordinates
-    // point bottomLeftCorner(-5.0,-5.0,0.0);
-    // point topRightCorner(5.0,5.0,0.0);
+     * For each pixel
+     * Construct ray from camera through pixel
+     * Find first primitive hit by ray
+     * Determine color at intersection point
+     * Draw color
+     */
 
     // calculate the step between each pixel
     float dx = (topRightCorner.px - bottomLeftCorner.px) / (float)pResolutionX;
@@ -126,9 +43,6 @@ void RayTracer::rayTrace()
 
     srand(time(NULL));
 
-    // initialize the octree
-    // Octree octree(&worldBox,Object_Array,pNumObjects);
-
     clock_t start, finish;
 
     start = clock();
@@ -136,14 +50,10 @@ void RayTracer::rayTrace()
     octree.OctreeInit(&worldBox, Object_Array, pNumObjects);
 
     finish = clock();
-    // printf("octime: %lf\n", (finish-start) / (double)CLOCKS_PER_SEC);
 
     char currFile[255];
 
     int keyFramePosition = 0;
-
-    // point currBotCorner = bottomLeftCorner;
-    // point currTopCorner = topRightCorner;
 
     Vector bottomCornerDisp = bottomLeftCorner - cameraPosition;
     Vector topCornerDisp    = topRightCorner - cameraPosition;
@@ -180,11 +90,6 @@ void RayTracer::rayTrace()
                 {
                     for (int y = 0; y < subPixelStep; y++)
                     {
-                        // printf("X: %d Y: %d\n", i, j);
-                        // point centerPixel;
-                        // centerPixel.set(bottomLeftCorner.px + 0.5*dx +
-                        // (float)i*dx, bottomLeftCorner.py + 0.5*dy +
-                        // (float)j*dy, 0.0);
                         point centerPixel;
                         if (pSampling > 4)
                         {
@@ -197,11 +102,6 @@ void RayTracer::rayTrace()
                                     (subPixelLengthY / 2.0) -
                                 (subPixelLengthY / 4.0);
 
-                            /*point centerPixel(bottomLeftCorner.px +
-                               (float)i*dx + subPixelLengthX*(float)x + randX,
-                                                            bottomLeftCorner.py
-                               + (float)j*dy + subPixelLengthY*(float)y + randY,
-                               topRightCorner.pz);*/
                             centerPixel.set(
                                 bottomLeftCorner.px + (float)i * dx +
                                     subPixelLengthX * (float)x +
@@ -213,13 +113,6 @@ void RayTracer::rayTrace()
                         }
                         else
                         {
-                            /*float distFromCenter = (point(bottomLeftCorner.px
-                               + (float)i*dx + subPixelLengthX*(float)x +
-                               subPixelLengthX/2.0, bottomLeftCorner.py +
-                               (float)j*dy + subPixelLengthY*(float)y +
-                               subPixelLengthY/2.0, topRightCorner.pz) -
-                               centerPixel).length();*/
-
                             centerPixel.set(
                                 bottomLeftCorner.px + (float)i * dx +
                                     subPixelLengthX * (float)x +
@@ -235,13 +128,8 @@ void RayTracer::rayTrace()
 
                         direction = rotationMatrix * direction;
 
-                        // direction = rotMatrix * direction;
-
-                        // Ray ray(centerPixel, direction);
                         Ray *ray   = new Ray(cameraPosition, direction);
                         ray->inAir = true;
-
-                        // Ray ray(cameraPosition, direction);
 
                         // initialize children
                         ray->reflectedRay = NULL;
@@ -258,13 +146,7 @@ void RayTracer::rayTrace()
                         if (ray->rayColor.pBlue > 1.0)
                             ray->rayColor.pBlue = 1.0;
 
-                        // float filterRadius = (subPixelLengthX*subPixelLengthX
-                        // + subPixelLengthY*subPixelLengthY) / 2.0; Color
-                        // filteredColor =
-                        // ray->rayColor*((1.0/filterRadius)*(cos(2.0*3.14159*distFromCenter/filterRadius)+1.0));
-
                         pixelColor = pixelColor + ray->rayColor;
-                        // pixelColor = pixelColor + filteredColor;
 
                         delete ray;
                     }
@@ -272,17 +154,12 @@ void RayTracer::rayTrace()
                 fillPixel(i, j, pixelColor * (1.0 / (float)pSampling));
             }
         }
-        // sprintf(currFile, "C:\\Documents and
-        // Settings\\spillow\\Desktop\\images\\image%05d.tga", k);
         sprintf(currFile, "%simage%05d.tga", Output_Textbox->get_text(), k);
         if (check_output_file->get_int_val() || animLoaded)
             outputTGA(currFile);
 
         printf("%.2f Complete\n", ((float)k / (float)pNumFrames) * 100.0);
     }
-    // printf("traverse time: %lf\n", traverse_time);
-    // printf("rayBox time: %lf\n", traverse_time2);
-    // printf("getObject time: %lf\n", traverse_time3);
     printf("done!\n");
 }
 
@@ -292,13 +169,7 @@ void RayTracer::traverseRayTree(Ray **node)
     if (*node == NULL)
         return;
 
-    // if ( (*node)->reflectedRay != NULL )
-    //{
-    // printf("moving in\n");
     traverseRayTree(&((*node)->reflectedRay));
-    //}
-
-    // if ( (*node)->refractedRay != NULL )
     traverseRayTree(&((*node)->refractedRay));
 
     if ((*node)->distributedRays != NULL)
@@ -330,8 +201,7 @@ void RayTracer::traverseRayTree(Ray **node)
         (*node)->rayColor *
         (1.0 - Object_Array[(*node)->objectIndex].getReflectivity() -
          Object_Array[(*node)->objectIndex]
-             .getRefractivity()); //+
-                                  // Object_Array[(*node)->objectIndex].getColor()*ambient_coeff;
+             .getRefractivity());
 
     // add specularity
     (*node)->rayColor = (*node)->rayColor + (*node)->specularComponent;
@@ -339,7 +209,6 @@ void RayTracer::traverseRayTree(Ray **node)
     // if not a leaf node
     if (((*node)->reflectedRay != NULL))
     {
-        // printf("adding reflection\n");
         if ((*node)->distributedRays == NULL)
             (*node)->rayColor =
                 (*node)->rayColor +
@@ -406,27 +275,25 @@ void RayTracer::traverseRayTree(Ray **node)
 void RayTracer::recursiveTrace(Ray **ray, int recursionDepth)
 {
     /*
-                        recursiveTrace(ray, recursionDepth):
-                          if recursionDepth = 0
-                            return
-                        we have a ray
-                        check it for nearest object intersection
-                        if missed scene
-                            return
-                        else
-                          find intersection point
-                if object hit reflection_coeff > 0
-                              left child gets reflected ray
-                                reflect ray left, right = null
-                              recursiveTrace(rayReflected, --recursionDepth)
+        recursiveTrace(ray, recursionDepth):
+            if recursionDepth = 0
+                return
+            we have a ray
+            check it for nearest object intersection
+            if missed scene
+                return
 
-                            if object hit refraction_coeff > 0
-                              right child gets refracted ray
-                              refracted ray left, right = null
-                              recursiveTrace(rayRefracted, --recursionDepth)
+            find intersection point
+            if object hit reflection_coeff > 0
+                left child gets reflected ray
+                reflect ray left, right = null
+                recursiveTrace(rayReflected, --recursionDepth)
 
-                            return
-                        */
+            if object hit refraction_coeff > 0
+                right child gets refracted ray
+                refracted ray left, right = null
+                recursiveTrace(rayRefracted, --recursionDepth)
+    */
 
     bool     missedScene;
     Triangle intersectedTriangle;
@@ -439,14 +306,10 @@ void RayTracer::recursiveTrace(Ray **ray, int recursionDepth)
 
     (*ray)->objectIndex = objectIndex;
 
-    // float diffuseAmount = 1.0 - Object_Array[objectIndex].getReflectivity() -
-    // Object_Array[objectIndex].getRefractivity();
-
-    if (!missedScene) // && ( diffuseAmount != 0.0 ) )
+    if (!missedScene)
     {
         (*ray)->rayColor =
             calcLocalLighting(*ray, intersectedTriangle, distance, objectIndex);
-        //+ Object_Array[objectIndex].getColor()*ambient_coeff;
     }
 
     if (missedScene || (recursionDepth == 0) ||
@@ -456,8 +319,6 @@ void RayTracer::recursiveTrace(Ray **ray, int recursionDepth)
 
     if (Object_Array[objectIndex].getReflectivity() > 0.0)
     {
-        // point intersection_point = (*ray)->getOrigin() +
-        // (*ray)->getDirection()*(distance*0.999);
         point intersection_point =
             (*ray)->getOrigin() + (*ray)->getDirection() * distance;
         Vector normal;
@@ -477,15 +338,9 @@ void RayTracer::recursiveTrace(Ray **ray, int recursionDepth)
         }
         else
         {
-            /*normal =
-               ((intersectedTriangle.Vertex[1]-intersectedTriangle.Vertex[0]).crossProduct(
-                               intersectedTriangle.Vertex[2]-intersectedTriangle.Vertex[0])*normal_flipper).normalize();*/
             normal = intersectedTriangle.normal;
             if (normal.dotProduct((*ray)->getDirection()) > 0.0)
                 normal = normal * -1.0;
-
-            /*if ( !((*ray)->inAir) )
-                normal = normal*-1.0;*/
 
             // floating check
             intersection_point = intersection_point + normal * 0.001;
@@ -495,9 +350,7 @@ void RayTracer::recursiveTrace(Ray **ray, int recursionDepth)
             ((*ray)->getDirection() -
              normal * ((((*ray)->getDirection()).dotProduct(normal)) * 2.0))
                 .normalize();
-        //(*ray)->reflectedRay = new Ray(intersection_point,(
-        //(*ray)->getDirection() -
-        // normal*((((*ray)->getDirection()).dotProduct(normal))*2.0)).normalize());
+
         (*ray)->reflectedRay = new Ray(intersection_point, reflection);
         (*ray)->reflectedRay->reflectedRay = NULL;
         (*ray)->reflectedRay->refractedRay = NULL;
@@ -537,13 +390,10 @@ void RayTracer::recursiveTrace(Ray **ray, int recursionDepth)
         recursionDepth++;
     }
 
-    // printf("getting past it\n");
     if (Object_Array[objectIndex].getRefractivity() > 0.0)
     {
-        // printf("we have ref\n");
+        // TODO?
         // need to extend intersection to make sure ray pushes through the glass
-        // point intersection_point = (*ray)->getOrigin() +
-        // (*ray)->getDirection()*(distance*1.001);
         point intersection_point =
             (*ray)->getOrigin() + (*ray)->getDirection() * distance;
         Vector normal;
@@ -551,9 +401,6 @@ void RayTracer::recursiveTrace(Ray **ray, int recursionDepth)
 
         if (Object_Array[objectIndex].getRadius() > 0.0)
         {
-            // normal =
-            // (intersection_point-Object_Array[objectIndex].getCenter()).normalize();
-            // u1 = GLASS; u2 = AIR;
             normal =
                 (Object_Array[objectIndex].getCenter() - intersection_point)
                     .normalize();
@@ -564,58 +411,37 @@ void RayTracer::recursiveTrace(Ray **ray, int recursionDepth)
             {
                 u1 = AIR;
                 u2 = GLASS;
-                // normal =
-                // (Object_Array[objectIndex].getCenter()-intersection_point).normalize();
-                //(*ray)->inAir = false;
             }
             else
             {
                 u1 = GLASS;
                 u2 = AIR;
-                // normal =
-                // (intersection_point-Object_Array[objectIndex].getCenter()).normalize();
-                //(*ray)->inAir = true;
             }
         }
         else
         {
-            /*normal =
-               ((intersectedTriangle.Vertex[1]-intersectedTriangle.Vertex[0]).crossProduct(
-                               intersectedTriangle.Vertex[2]-intersectedTriangle.Vertex[0])*normal_flipper).normalize();*/
             normal = intersectedTriangle.normal;
             if (normal.dotProduct((*ray)->getDirection()) < 0.0)
                 normal = normal * -1.0;
-            // u1 = GLASS; u2 = AIR;
             if ((*ray)->inAir)
             {
                 u1 = AIR;
                 u2 = GLASS;
-                //(*ray)->inAir = false;
             }
             else
             {
                 u1 = GLASS;
                 u2 = AIR;
-                // normal = normal*-1.0;
-                //(*ray)->inAir = true;
             }
-            /*if ( (*ray)->inAir )
-            {
-                u1 = AIR; u2 = GLASS;
-                normal = normal*-1.0;
-            }*/
         }
         Vector n1        = (*ray)->getDirection();
         float  dot       = n1.dotProduct(normal);
         float  underRoot = u2 * u2 - u1 * u1 + dot * dot;
-        // Vector refRay = n1 - normal*(dot) + normal*(sqrt(u2*u2 - u1*u1 +
-        // dot*dot));
         if (underRoot < 0.0)
             return;
 
         Vector refRay = n1 - normal * (dot) + normal * (sqrt(underRoot));
         // an approximation
-        // Vector refRay = n1 + normal*(u2-u1);
 
         // floating back
         intersection_point = intersection_point + normal * 0.001;
@@ -672,12 +498,6 @@ bool RayTracer::intersectsTriangle(point vertex, Triangle tri, Vector dir,
     Vector      pVec    = dir.crossProduct(edge2);
     float       det     = edge1.dotProduct(pVec);
 
-    // printf("edge1: %.2f\n", edge1.px, edge1.py, edge1.pz);
-    // printf("pvec: %.2f %.2f %.2f\n", pVec.px, pVec.py, pVec.pz);
-
-    // printf("%.2f\n", det);
-
-    // if (det < EPSILON)
     if (det < EPSILON && det > -EPSILON)
         return false;
 
@@ -708,8 +528,6 @@ bool RayTracer::intersectsSphere(Ray ray, float *distance, int objectIndex)
     Vector centerToOrigin =
         ray.getOrigin() - Object_Array[objectIndex].getCenter();
 
-    // float a = ray.getDirection().dotProduct(ray.getDirection());
-    // float a = 1.0;
     float b = ((ray.getDirection()).dotProduct(centerToOrigin)) * 2.0;
     float c = (centerToOrigin.dotProduct(centerToOrigin)) -
               (Object_Array[objectIndex].getRadius() *
@@ -732,24 +550,12 @@ bool RayTracer::intersectsSphere(Ray ray, float *distance, int objectIndex)
         t1 = (-b - sqrt(discriminant)) / (2.0);
     }
 
-    // need to modify for refraction
-    /*if ( t0 > 0.0 )
-    {
-        if ( t0 <= t1 )
-          *distance = t0;
-    }
-    else if ( t1 > 0.0 )
-    {
-        if ( t1 < t0 )
-          *distance = t1;
-    }*/
+    // TODO: need to modify for refraction
 
     if (t1 > 0.0)
         *distance = t1;
     else
         *distance = t0;
-
-    //*distance = t1;
 
     return true;
 }
@@ -764,54 +570,6 @@ Triangle RayTracer::findIntersection(Ray ray, bool *missedScene,
     float       shortestDistance = 5000.0;
     Triangle    TriangleIntersected;
     float       t, u, v;
-    // printf("%d\n", Object_Array[0].pNumTriangles);
-
-    // initialize the objects to having not been checked yet in octree run
-    /*for (int i=0; i < pNumObjects; i++)
-    {
-        Object_Array[i].beenChecked = false;
-    }
-
-    clock_t start3, finish3;
-
-    start3 = clock();
-    vector<Object*> Object_Traversal = octree.getObjects(&worldBox, ray);
-    finish3 = clock();
-
-  traverse_time3 += (finish3-start3) / (double)CLOCKS_PER_SEC;
-
-    for (int i=0; i < Object_Traversal.size(); i++)
-    {
-        if (Object_Traversal[i]->getRadius() > 0.0)  //if object is a sphere
-        {
-      if ( intersectsSphere(ray,&t,Object_Traversal[i]->Object_Index) )
-            {
-                if ( (t > 0.0) && (t < shortestDistance) )
-                {
-                    shortestDistance = t;
-                    *objectIndex = Object_Traversal[i]->Object_Index;
-                }
-            }
-            continue;
-        }
-        else
-        {
-          for (int j=0; j < Object_Traversal[i]->pNumTriangles; j++)
-        {
-        if (
-  intersectsTriangle(ray.getOrigin(),Object_Traversal[i]->Triangle_Array[j],ray.getDirection(),&t,&u,&v)
-  )
-            {
-            if ( (t > 0.0) && (t < shortestDistance) )
-            {
-                  TriangleIntersected = Object_Traversal[i]->Triangle_Array[j];
-  //shouldn't this be j?, yes shortestDistance = t; *objectIndex =
-  Object_Traversal[i]->Object_Index;
-              }
-          }
-        }
-        }
-    }*/
 
     for (int i = 0; i < pNumObjects; i++)
     {
@@ -863,46 +621,6 @@ bool RayTracer::shadowIntersection(Ray ray, float rayDist)
     // find first primitive hit by ray
     float t, u, v;
 
-    // initialize the objects to having not been checked yet in octree run
-    /*for (int i=0; i < pNumObjects; i++)
-    {
-        Object_Array[i].beenChecked = false;
-    }
-
-    vector<Object*> Object_Traversal = octree.getObjects(&worldBox, ray);
-
-  for (int i=0; i < Object_Traversal.size(); i++)
-    {
-        //if object is refractive, light can get through
-        if (Object_Traversal[i]->getRefractivity() > 0.0)
-            continue;
-
-        if (Object_Traversal[i]->getRadius() > 0.0)  //if object is a sphere
-        {
-      if ( intersectsSphere(ray,&t,Object_Traversal[i]->Object_Index) )
-            {
-        if ( (t > 0.0) && (t < rayDist) )
-                return true;
-            }
-            continue;
-        }
-        else
-        {
-          for (int j=0; j < Object_Traversal[i]->pNumTriangles; j++)
-          {
-        if (
-  intersectsTriangle(ray.getOrigin(),Object_Traversal[i]->Triangle_Array[j],ray.getDirection(),&t,&u,&v)
-  )
-          {
-            if ( (t > 0.0) && (t < rayDist) )
-              {
-            return true;
-              }
-          }
-        }
-        }
-    }*/
-
     for (int i = 0; i < pNumObjects; i++)
     {
         // if object is refractive, light can get through
@@ -940,39 +658,19 @@ void RayTracer::fillPixel(int column, int row, Color color)
     mybuffer[row * 512 * 3 + column * 3]     = (int)(color.pRed * 255.0);
     mybuffer[row * 512 * 3 + column * 3 + 1] = (int)(color.pGreen * 255.0);
     mybuffer[row * 512 * 3 + column * 3 + 2] = (int)(color.pBlue * 255.0);
-
-    /*mybuffer[row*pResolutionX*3 + column*3  ] = (int)(color.pRed*255.0);
-  mybuffer[row*pResolutionX*3 + column*3+1] = (int)(color.pGreen*255.0);
-  mybuffer[row*pResolutionX*3 + column*3+2] = (int)(color.pBlue*255.0);*/
 }
 
 Color RayTracer::calcLocalLighting(Ray *ray, Triangle triangle, float distance,
                                    int objectIndex)
 {
     // find intersection point
-    // Vector step_back = ray.getDirection()*(-1.0*0.001);
-    // point intersection_point = ray.getOrigin() + (
-    // ray.getDirection()*distance + step_back ); //scaled back to try and avoid
+    // scaled back to try and avoid
     // self shadows (bit of a hack for now)
     point intersection_point =
         ray->getOrigin() + ray->getDirection() * (distance * 0.999);
-    // point intersection_point = ray->getOrigin() +
-    // ray->getDirection()*distance;
     Color calculatedColor(0, 0, 0);
 
-    /*Vector normal;
-    if ( Object_Array[objectIndex].getRadius() > 0.0 ) {
-      normal =
-    (intersection_point-Object_Array[objectIndex].getCenter()).normalize();
-    }
-    else {
-        normal = triangle.normal;
-    }
-    if ( ray->getDirection().dotProduct(normal) > 0.0 )
-      normal = normal*-1.0;*/
-
     // floating back
-    // intersection_point = intersection_point + normal*0.001;
 
     for (int i = 0; i < pNumLights; i++)
     {
@@ -1043,8 +741,6 @@ Color RayTracer::calcLocalLighting(Ray *ray, Triangle triangle, float distance,
                 ray->specularComponent =
                     (Light_Array[i].getColor() * powf(dotProduct, 20.0) *
                      Object_Array[objectIndex].getSpecular());
-                // calculatedColor = calculatedColor +
-                // (Light_Array[i].getColor()*powf(dotProduct,20.0)*Object_Array[objectIndex].getSpecular());
             }
         }
     }
@@ -1192,9 +888,6 @@ bool RayTracer::loadScene(const char *filename)
                       location.py, location.pz, rotation.px, rotation.py,
                       rotation.pz);
 
-            // printf("Box: %.2f %.2f %.2f\n", dimensions.px, dimensions.py,
-            // dimensions.pz);
-
             Object_Array[object_count].setProperties(reflect, diffuse, specular,
                                                      color, refract, 12,
                                                      myBox.pTriangles, blur);
@@ -1221,9 +914,6 @@ bool RayTracer::loadScene(const char *filename)
             Cone myCone(radius, height, tess_factor, location.px, location.py,
                         location.pz, rotation.px, rotation.py, rotation.pz);
 
-            // printf("Box: %.2f %.2f %.2f\n", dimensions.px, dimensions.py,
-            // dimensions.pz);
-
             Object_Array[object_count].setProperties(
                 reflect, diffuse, specular, color, refract,
                 (tess_factor - 1) * 2 + 1, myCone.pTriangles, blur);
@@ -1240,14 +930,9 @@ bool RayTracer::loadScene(const char *filename)
                 "texture "
                 "reflect(%f),diffuse(%f),specular(%f),color(%f,%f,%f),refract(%"
                 "f),blur(%f)\n",
-                // fscanf(file_ptr, "texture
-                // reflect(%f),diffuse(%f),specular(%f),color(%f,%f,%f),refract(%f)\n",
                 &reflect, &diffuse, &specular, &color.pRed, &color.pGreen,
                 &color.pBlue, &refract, &blur);
-            //&reflect, &diffuse, &specular, &color.pRed, &color.pGreen,
-            //&color.pBlue, &refract);
 
-            // blur = 0.0;
             Object_Array[object_count].setProperties(
                 reflect, diffuse, specular, color, refract, 1, new Triangle(),
                 blur, radius, location);
@@ -1296,7 +981,6 @@ bool RayTracer::loadScene(const char *filename)
                 Light_Array[light_count + i] = theAreaLight.Light_Array[i];
             }
 
-            // Light_Array[light_count].set(location,color,intensity);
             light_count += accuracy_factor * accuracy_factor;
         }
         else if (!strcmp(object, "camera"))
@@ -1309,7 +993,6 @@ bool RayTracer::loadScene(const char *filename)
 
             cameraPosition.set(location.px, location.py, location.pz);
             bottomLeftCorner.set(-5.0, -5.0, 0.0);
-            // topRightCorner.set(5.0,5.0,0.0);
             topRightCorner.set(5.0, -5.0 + 10.0 * aspectRatio, 0.0);
 
             // translate the screen so the camera is still in the center
@@ -1397,8 +1080,6 @@ bool RayTracer::loadAnimation(const char *filename)
         Keys.push_back(keyFrame(currTime, location, prevCamera, lastTime));
     }
 
-    // printf("how many? %d\n", Keys.size());
-
     pNumFrames = (int)(Keys[Keys.size() - 1].time * 25.0);
 
     fclose(file_ptr);
@@ -1428,14 +1109,6 @@ void RayTracer::outputTGA(char *filename)
     putc(0, file_ptr); /* X origin */
     putc(0, file_ptr);
     putc(0, file_ptr); /* y origin */
-    // putc((width & 0x00FF),file_ptr);
-    // putc((width & 0xFF00) / 256,file_ptr);
-    // putc((height & 0x00FF),file_ptr);
-    // putc((height & 0xFF00) / 256,file_ptr);
-    // putc((width & 0x00FF),file_ptr);
-    // putc((width & 0xFF00) / 256,file_ptr);
-    // putc((height & 0x00FF),file_ptr);
-    // putc((height & 0xFF00) / 256,file_ptr);
     putc((pResolutionX & 0x00FF), file_ptr);
     putc((pResolutionX & 0xFF00) / 256, file_ptr);
     putc((pResolutionY & 0x00FF), file_ptr);
@@ -1452,12 +1125,5 @@ void RayTracer::outputTGA(char *filename)
             putc(255, file_ptr);                               // a
         }
     }
-    /*for (int i=0;i<512*512;i++) {
-      putc(255,file_ptr);
-      putc(0,file_ptr);
-      putc(0,file_ptr);
-      putc(255,file_ptr);
-   }*/
-    // printf("file out\n");
     fclose(file_ptr);
 }

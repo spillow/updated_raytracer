@@ -7,13 +7,14 @@
 #include <time.h>
 #include "mathobjects.h"
 #include <vector>
+#include <fstream>
+#include <ios>
+
 using namespace std;
 
-#include <fstream>
 using std::endl;
 using std::ofstream;
 
-#include <ios>
 using std::ios_base;
 
 const short int width  = 512;

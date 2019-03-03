@@ -15,7 +15,6 @@ AreaLight::AreaLight(point position, float side, int accuracy_factor,
     float subSide = side / (float)accuracy_factor;
 
     // point
-    // cornerMiddle((position.px-side/2.0)+subSide/2.0,position.py,(position.pz-side/2.0)+subSide/2.0);
     point cornerMiddle((position.px - side / 2.0), position.py,
                        (position.pz - side / 2.0));
 
@@ -113,43 +112,6 @@ Box::Box(float width, float height, float depth, float transX, float transY,
     pTriangles[10].set(-w, -h, d, -w, -h, -d, w, -h, d);
     pTriangles[11].set(-w, -h, -d, w, -h, -d, w, -h, d);
 
-    /*pTriangles[0].set(-w,-h,d,
-             -w,h,d,
-             w,-h,d);
-    pTriangles[1].set(-w,h,d,
-             w,h,d,
-             w,-h,d);
-    pTriangles[2].set(-w,-h,-d,
-             -w,h,-d,
-             w,-h,-d);
-    pTriangles[3].set(-w,h,-d,
-             w,h,-d,
-             w,-h,-d);
-    pTriangles[4].set(-w,-h,-d,
-             -w,h,-d,
-             -w,-h,d);
-    pTriangles[5].set(-w,h,-d,
-             -w,h,d,
-             -w,-h,d);
-    pTriangles[6].set(w,-h,-d,
-             w,h,-d,
-             w,-h,d);
-    pTriangles[7].set(w,h,-d,
-             w,h,d,
-             w,-h,d);
-    pTriangles[8].set(-w,h,d,
-             -w,h,-d,
-             w,h,d);
-    pTriangles[9].set(-w,h,-d,
-             w,h,-d,
-             w,h,d);
-    pTriangles[10].set(-w,-h,d,
-              -w,-h,-d,
-              w,-h,d);
-    pTriangles[11].set(-w,-h,-d,
-              w,-h,-d,
-              w,-h,d);*/
-
     rotateobj(rotX, rotY, rotZ);
     translate(transX, transY, transZ);
 }
@@ -206,41 +168,6 @@ Cone::Cone(float radius, float height, int tess_factor, float transX,
     delete triangleStrip;
 }
 
-/*
-void Cone::Draw()
-{
-    if (!myCone.isVisible)
-        return;
-
-  for (int i=0; i < tess_factor-1; i++)
-    {
-      glBegin(GL_TRIANGLES);
-      glVertex3f(triangleStrip[i].px, triangleStrip[i].py, triangleStrip[i].pz);
-      glVertex3f(triangleStrip[i+1].px, triangleStrip[i+1].py,
-triangleStrip[i+1].pz); glVertex3f(apex.px,apex.py,apex.pz); glEnd();
-
-      glBegin(GL_TRIANGLES);
-      glVertex3f(triangleStrip[i].px, triangleStrip[i].py, triangleStrip[i].pz);
-      glVertex3f(triangleStrip[i+1].px, triangleStrip[i+1].py,
-triangleStrip[i+1].pz);
-      glVertex3f(circleCenter.px,circleCenter.py,circleCenter.pz);
-      glEnd();
-    }
-
-      glBegin(GL_TRIANGLES);
-    glVertex3f(triangleStrip[tess_factor-1].px, triangleStrip[tess_factor-1].py,
-triangleStrip[tess_factor-1].pz); glVertex3f(triangleStrip[0].px,
-triangleStrip[0].py, triangleStrip[0].pz); glVertex3f(apex.px,apex.py,apex.pz);
-    glEnd();
-
-        glBegin(GL_TRIANGLES);
-    glVertex3f(triangleStrip[tess_factor-1].px, triangleStrip[tess_factor-1].py,
-triangleStrip[tess_factor-1].pz); glVertex3f(triangleStrip[0].px,
-triangleStrip[0].py, triangleStrip[0].pz); glVertex3f(circleCenter.px,
-circleCenter.py, circleCenter.pz); glEnd();
-}
-*/
-
 void Box::translate(float x, float y, float z)
 {
     matrix trans(matrix::TRANSLATE, x, y, z);
@@ -286,8 +213,6 @@ void Octree::OctreeInit(BoundingBox **Box, Object *worldList,
                         int worldNumObjects)
 {
     (*Box) = new BoundingBox;
-    //(*Box)->set(boxMinExtent, boxMaxExtent);
-    //(*Box)->Storage = new Object*[worldNumObjects];
     (*Box)->Storage.resize(worldNumObjects);
 
     for (int i = 0; i < worldNumObjects; i++)
@@ -295,7 +220,6 @@ void Octree::OctreeInit(BoundingBox **Box, Object *worldList,
         (*Box)->Storage[i] = &worldList[i];
     }
 
-    //(*Box)->numObjects = worldNumObjects;
     maxObjectsPerBox = 10;
 
     // initialize the box bounds by going through the objects in the scene and
@@ -364,23 +288,11 @@ void Octree::OctreeInit(BoundingBox **Box, Object *worldList,
 
     (*Box)->set(point(xmin, ymin, zmin), point(xmax, ymax, zmax));
 
-    // printf("min: %.2f %.2f %.2f\n max: %.2f %.2f %.2f\n",
-    // xmin,ymin,zmin,xmax,ymax,zmax);
-
     buildOctree(Box);
 }
 
 bool Octree::boxSphereIntersection(BoundingBox Box, Object sphere)
 {
-    /*
-    dmin = 0;
-                for( i = 0; i < n; i++ ) {
-                    if( C[i] < Bmin[i] ) dmin += SQR(C[i] - Bmin[i] ); else
-                    if( C[i] > Bmax[i] ) dmin += SQR( C[i] - Bmax[i] );
-                    }
-                if( dmin <= r2 ) return( TRUE );
-    */
-
     float dmin = 0.0;
     float r2   = sphere.getRadius() * sphere.getRadius();
 
@@ -533,22 +445,7 @@ bool Octree::boxSphereIntersection(BoundingBox Box, Object sphere)
 
 bool Octree::planeBoxOverlap(Vector normal, float d, Vector maxbox)
 {
-    // int q;
-    // float vmin[3],vmax[3];
     Vector vmin, vmax;
-    /*for(q=0;q<=2;q++)
-    {
-      if(normal[q]>0.0f)
-      {
-        vmin[q]=-maxbox[q];
-        vmax[q]=maxbox[q];
-      }
-      else
-      {
-        vmin[q]=maxbox[q];
-        vmax[q]=-maxbox[q];
-      }
-    }*/
 
     // X case
     if (normal.px > 0.0)
@@ -586,12 +483,6 @@ bool Octree::planeBoxOverlap(Vector normal, float d, Vector maxbox)
         vmax.pz = -maxbox.pz;
     }
 
-    /*if(DOT(normal,vmin)+d>0.0f)
-          return false;
-
-    if(DOT(normal,vmax)+d>=0.0f)
-          return true;*/
-
     if (normal.dotProduct(vmin) + d > 0.0)
         return false;
 
@@ -621,10 +512,6 @@ bool Octree::boxTriangleIntersection(BoundingBox Box, Triangle triangle)
     point boxCenter((Box.boxMinExtent.px + Box.boxMaxExtent.px) / 2.0,
                     (Box.boxMinExtent.py + Box.boxMaxExtent.py) / 2.0,
                     (Box.boxMinExtent.pz + Box.boxMaxExtent.pz) / 2.0);
-
-    /*v0.set(triangle.Vertex[0].px-boxCenter.px,triangle.Vertex[0].py-boxCenter.py,triangle.Vertex[0].pz-boxCenter.pz);
-    v1.set(triangle.Vertex[1].px-boxCenter.px,triangle.Vertex[1].py-boxCenter.py,triangle.Vertex[1].pz-boxCenter.pz);
-    v2.set(triangle.Vertex[2].px-boxCenter.px,triangle.Vertex[2].py-boxCenter.py,triangle.Vertex[2].pz-boxCenter.pz);*/
 
     v0 = triangle.Vertex[0] - boxCenter;
     v1 = triangle.Vertex[1] - boxCenter;
@@ -688,8 +575,6 @@ void Octree::buildOctree(BoundingBox **Box)
     if ((*Box)->Storage.size() <= maxObjectsPerBox)
         return;
 
-    //(*Box)->childBoxes = new BoundingBox*[8];
-
     for (int i = 0; i < 8; i++)
     {
         (*Box)->childBoxes[i] = new BoundingBox;
@@ -733,7 +618,6 @@ void Octree::buildOctree(BoundingBox **Box)
                 if (boxSphereIntersection(*((*Box)->childBoxes[k]),
                                           *((*Box)->Storage[i])))
                 {
-                    //(*Box)->childBoxes[k]->numObjects++;
                     (*Box)->childBoxes[k]->Storage.push_back(
                         (*Box)->Storage[i]);
                 }
@@ -749,7 +633,6 @@ void Octree::buildOctree(BoundingBox **Box)
                         // add obj inc numObj, break
                         (*Box)->childBoxes[k]->Storage.push_back(
                             (*Box)->Storage[i]);
-                        //(*Box)->childBoxes[k]->numObjects++;
                         break;
                     }
                 }
@@ -888,7 +771,6 @@ void Octree::traverseOctree(BoundingBox **Box, Ray ray)
     bool rayBox = rayBoxIntersection(**Box, ray);
     finish2     = clock();
     traverse_time2 += (finish2 - start2) / (double)CLOCKS_PER_SEC;
-    // if ( !rayBoxIntersection(**Box, ray) )
     if (!rayBox)
     {
         return;
@@ -896,7 +778,6 @@ void Octree::traverseOctree(BoundingBox **Box, Ray ray)
 
     if ((*Box)->childBoxes[0] == NULL) // then this is a leaf node
     {
-        // numObjectsToSendBack += (*Box)->numObjects;
         // add to the pot (if the object isn't tagged as already been added)
         for (int i = 0; i < (*Box)->Storage.size(); i++)
         {
@@ -928,10 +809,6 @@ vector<Object *> Octree::getObjects(BoundingBox **Box, Ray ray)
     finish1 = clock();
 
     traverse_time += (finish1 - start1) / (double)CLOCKS_PER_SEC;
-
-    // printf("octime: %lf\n", (finish-start) / (double)CLOCKS_PER_SEC);
-
-    // printf("sending: %d\n", objectsToSendBack.size());
 
     return objectsToSendBack;
 }
