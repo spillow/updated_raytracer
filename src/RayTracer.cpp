@@ -154,7 +154,7 @@ void RayTracer::rayTrace()
                 fillPixel(i, j, pixelColor * (1.0 / (float)pSampling));
             }
         }
-        sprintf(currFile, "%simage%05d.tga", Output_Textbox->get_text(), k);
+        sprintf(currFile, "%simage%05d.tga", Output_Textbox->get_text().c_str(), k);
         if (check_output_file->get_int_val() || animLoaded)
             outputTGA(currFile);
 

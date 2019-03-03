@@ -120,6 +120,10 @@ os.chdir(dname)
 allObjects = D.objects
 
 with open('scene_data.txt', 'w') as f:
+    # need to print out the number of objects and lights
+    # to allocate memory up front
+    f.write('objects:%d\n' % (len([x for x in allObjects if x.type == 'MESH'])))
+    f.write('lights:%d\n' % (len([x for x in allObjects if x.type == 'LIGHT'])))
     for obj in allObjects:
         emitObject(f, obj)
 
