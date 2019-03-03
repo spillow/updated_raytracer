@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
-#include <glui/glui.h>
+#include <GL/glui.h>
 #include <stdio.h>
 #include <math.h>
 #include <time.h>

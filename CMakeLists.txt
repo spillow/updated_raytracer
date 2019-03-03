@@ -33,4 +33,5 @@ target_include_directories(glui_static PUBLIC
 
 target_include_directories(RayTracer PUBLIC
     include
-    ${GLUT_ROOT_PATH}/include)
+    ${GLUT_ROOT_PATH}/include
+    ${GLUI_ROOT_PATH}/include)
