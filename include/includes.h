@@ -10,13 +10,13 @@
 using namespace std;
 
 #include <fstream>
-using std::ofstream;
 using std::endl;
+using std::ofstream;
 
 #include <ios>
 using std::ios_base;
 
-const short int width = 512;
+const short int width  = 512;
 const short int height = 512;
 
 void MakeGUI();
